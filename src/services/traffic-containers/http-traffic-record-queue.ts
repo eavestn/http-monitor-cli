@@ -5,21 +5,29 @@ export default class HttpTrafficRecordQueue {
     // length
     // averages?
     private PERIOD_THRESHOLD_MS: Number = 10000; // 10 seconds
+    private _queue: IHttpTrafficRecord[];
+    private _trafficStart?: Date;
+    private _trafficFinish?: Date;
+    private _eventEmitter: EventEmitter;
 
-    public constructor(
-        private _queue: IHttpTrafficRecord[],
-        private _trafficStart: Date,
-        private _trafficFinish: Date,
-        private _eventEmitter: EventEmitter = new EventEmitter(),
-    ) {
+    public constructor() {
+        this._queue = new Array<IHttpTrafficRecord>();
+        this._eventEmitter = new EventEmitter();
+        
         this._eventEmitter.on("record_added", this._handleRecordAddition);
-        this._eventEmitter.on("record_add_failure", this._handleRecordAdditionFailure);
+        this._eventEmitter.on("batch_at_capacity", this._handleRecordAdditionFailure);
     }
 
-    private _handleRecordAddition (record: IHttpTrafficRecord): void {
+    private _determineTimeDifference(record: IHttpTrafficRecord): Number {
         if (!this._queue[0]) {
             this._trafficStart = record.Date;
         }
+
+        return (this._trafficStart as Date).getTime() - record.Date.getTime();
+    }
+
+    private _handleRecordAddition (record: IHttpTrafficRecord): void {
+        // ......
     }
 
     private _handleRecordAdditionFailure (record: IHttpTrafficRecord): void {
@@ -31,16 +39,12 @@ export default class HttpTrafficRecordQueue {
     }
 
     public Enqueue(record: IHttpTrafficRecord): IHttpTrafficRecord | undefined {
-        const timeDifference: Number = this._trafficStart.getTime() - record.Date.getTime();
-
-        if (timeDifference > this.PERIOD_THRESHOLD_MS) {
-
+        if (this._determineTimeDifference(record) > this.PERIOD_THRESHOLD_MS) {
             this._queue.push(record);
             this._eventEmitter.emit("record_added", record);
-
             return record;
         } else {
-            this._eventEmitter.emit("record_add_failure", record);
+            this._eventEmitter.emit("batch_at_capacity", record);
             return undefined;
         }
     }
