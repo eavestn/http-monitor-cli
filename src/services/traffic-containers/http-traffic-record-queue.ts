@@ -3,8 +3,6 @@ import { EventEmitter } from "events";
 import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 
 export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
-    // length
-    // averages?
     private PERIOD_THRESHOLD_MS: Number = 10000; // 10 seconds
     private _queue: IHttpTrafficRecord[];
     private _trafficStart?: Date;
@@ -28,7 +26,7 @@ export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
     }
 
     private _handleRecordAddition (record: IHttpTrafficRecord): void {
-        this._determineTimeDifference(record);
+        // this._determineTimeDifference(record);
     }
 
     private _handleRecordAdditionFailure (record: IHttpTrafficRecord): void {
@@ -56,5 +54,9 @@ export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
 
     public GetTrafficStart(): Date | undefined {
         return this._trafficStart;
+    }
+
+    public Length(): number {
+        return this._queue.length;
     }
 }

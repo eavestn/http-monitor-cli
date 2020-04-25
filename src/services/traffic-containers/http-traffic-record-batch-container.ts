@@ -4,6 +4,7 @@ import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 // count validation (are we missing anything) - can aggregate as we role
 export default class HttpTrafficRecordBatchContainer implements IHttpTrafficRecordBatchContainer {
     private _recordHashMap: { [hash: string]: IHttpTrafficRecordQueue };
+    private _batches: number = 0;
     
     public constructor(
     ) {
@@ -25,8 +26,10 @@ export default class HttpTrafficRecordBatchContainer implements IHttpTrafficReco
             hash = `id-${batchTrafficStart}-${(Math.random() * 1000).toString()}`
         }
         
-        console.log(hash);
         this._recordHashMap[hash] = queue;
+        this._batches += 1;
+
+        console.log(this._batches);
 
         return hash;
     }
