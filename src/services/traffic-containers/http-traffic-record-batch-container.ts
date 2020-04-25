@@ -1,19 +1,21 @@
-import HttpTrafficRecordQueue from "./http-traffic-record-queue";
+import IHttpTrafficRecordBatchContainer from "./interfaces/i-http-traffic-record-batch-container";
+import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 
 // count validation (are we missing anything) - can aggregate as we role
-export default class HttpTrafficRecordBatchContainer {
+export default class HttpTrafficRecordBatchContainer implements IHttpTrafficRecordBatchContainer {
+    private _recordHashMap: { [hash: string]: IHttpTrafficRecordQueue };
+    
     public constructor(
-        private _recordHashMap: { [hash: string]: HttpTrafficRecordQueue },
     ) {
-        // do nothing ...
+        this._recordHashMap = new Object() as { [hash: string]: IHttpTrafficRecordQueue };
     }
 
-    public AddRecordBatch(record: HttpTrafficRecordQueue): string {
+    public AddRecordBatch(queue: IHttpTrafficRecordQueue): string {
         // in below assignment, force cast to Date as we know - at this stage - that a record batch should at
         // least have a start (and also a finish).
         let batchTrafficStart: string = 
-            (record.GetTrafficStart() as Date)
-                .getMilliseconds()
+            (queue.GetTrafficStart() as Date)
+                .getTime()
                 .toString();
         let hash: string = `id-${batchTrafficStart}`;
 
@@ -23,12 +25,13 @@ export default class HttpTrafficRecordBatchContainer {
             hash = `id-${batchTrafficStart}-${(Math.random() * 1000).toString()}`
         }
         
-        this._recordHashMap[hash] = record;
+        console.log(hash);
+        this._recordHashMap[hash] = queue;
 
         return hash;
     }
 
-    public GetRecordBatch(id: string): HttpTrafficRecordQueue | undefined {
+    public GetRecordBatch(id: string): IHttpTrafficRecordQueue | undefined {
         return this._recordHashMap[id];
     }
 }

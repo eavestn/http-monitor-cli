@@ -25,6 +25,8 @@ import { resolve } from "path";
 import { config } from "dotenv";
 import IRawHttpTrafficRecord from "./models/raw-http-traffic-record";
 import HttpTrafficRecordFactory from "./services/http-traffic-record-factory";
+import HttpTrafficRecordBatchContainer from "./services/traffic-containers/http-traffic-record-batch-container";
+import HttpTrafficBatcher from "./services/traffic-containers/http-traffic-batcher";
 
 const queue: any[] = [];
 // init process.env
@@ -32,13 +34,14 @@ const conf = config({
     "path": resolve(__dirname, "../.env.dev")
 }) as any;
 
+const batcher = new HttpTrafficBatcher(new HttpTrafficRecordBatchContainer());
+
 
 createReadStream(process.env.PATH_TO_HTTP_STREAM_LOG_CSV as PathLike)
     .pipe(csv())
     .on("data", (data: IRawHttpTrafficRecord) => {
         const record = HttpTrafficRecordFactory.CreateHttpTrafficRecord(data);
-
-        console.log(record);
+        batcher.BatchRecord(record);
     })
     .on("end", () => {
         console.log(queue)

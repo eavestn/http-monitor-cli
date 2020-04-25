@@ -1,7 +1,8 @@
 import IHttpTrafficRecord from "../../models/http-traffic-record";
 import { EventEmitter } from "events";
+import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 
-export default class HttpTrafficRecordQueue {
+export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
     // length
     // averages?
     private PERIOD_THRESHOLD_MS: Number = 10000; // 10 seconds
@@ -14,8 +15,8 @@ export default class HttpTrafficRecordQueue {
         this._queue = new Array<IHttpTrafficRecord>();
         this._eventEmitter = new EventEmitter();
         
-        this._eventEmitter.on("record_added", this._handleRecordAddition);
-        this._eventEmitter.on("batch_at_capacity", this._handleRecordAdditionFailure);
+        this._eventEmitter.on("record_added", this._handleRecordAddition.bind(this));
+        this._eventEmitter.on("batch_at_capacity", this._handleRecordAdditionFailure.bind(this));
     }
 
     private _determineTimeDifference(record: IHttpTrafficRecord): Number {
@@ -23,11 +24,11 @@ export default class HttpTrafficRecordQueue {
             this._trafficStart = record.Date;
         }
 
-        return (this._trafficStart as Date).getTime() - record.Date.getTime();
+        return record.Date.getTime() - (this._trafficStart as Date).getTime();
     }
 
     private _handleRecordAddition (record: IHttpTrafficRecord): void {
-        // ......
+        this._determineTimeDifference(record);
     }
 
     private _handleRecordAdditionFailure (record: IHttpTrafficRecord): void {
@@ -39,7 +40,7 @@ export default class HttpTrafficRecordQueue {
     }
 
     public Enqueue(record: IHttpTrafficRecord): IHttpTrafficRecord | undefined {
-        if (this._determineTimeDifference(record) > this.PERIOD_THRESHOLD_MS) {
+        if (this._determineTimeDifference(record) <= this.PERIOD_THRESHOLD_MS) {
             this._queue.push(record);
             this._eventEmitter.emit("record_added", record);
             return record;
