@@ -1,7 +1,7 @@
-import IHttpTrafficRecord from "./models/http-traffic-record";
+import IHttpTrafficRecord from "../../models/http-traffic-record";
 import { EventEmitter } from "events";
 
-export default class HttpRecordQueue {
+export default class HttpTrafficRecordQueue {
     // length
     // averages?
     private PERIOD_THRESHOLD_MS: Number = 10000; // 10 seconds
