@@ -2,15 +2,19 @@ import IHttpTrafficRecordBatchContainer from "./interfaces/i-http-traffic-record
 import IHttpTrafficRecord from "../../models/http-traffic-record";
 import HttpTrafficRecordQueue from "./http-traffic-record-queue";
 import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
+import IHttpTrafficMeaningMaker from "../meaning-makers/interfaces/i-http-traffic-meaning-maker";
 
 export default class HttpTrafficBatcher {
     private _batchContainer: IHttpTrafficRecordBatchContainer;
     private _currentBatchId: string = "";
+    private _meaningMaker: IHttpTrafficMeaningMaker;
 
     public constructor (
-        batchContainer: IHttpTrafficRecordBatchContainer
+        batchContainer: IHttpTrafficRecordBatchContainer,
+        meaningMaker : IHttpTrafficMeaningMaker,
     ) {
         this._batchContainer = batchContainer;
+        this._meaningMaker = meaningMaker;
     }
 
     private _addHttpTrafficRecordToBatch(record: IHttpTrafficRecord): IHttpTrafficRecord | undefined {
@@ -18,7 +22,7 @@ export default class HttpTrafficBatcher {
     }
 
     private _initializeNewQueueAndAddOne(record: IHttpTrafficRecord): IHttpTrafficRecordQueue {
-        const queue = new HttpTrafficRecordQueue();
+        const queue = new HttpTrafficRecordQueue(this._meaningMaker);
         queue.Enqueue(record);
         return queue;
     }
