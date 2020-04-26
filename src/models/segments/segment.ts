@@ -1,6 +1,4 @@
 export default interface ISegment {
-    Root: string;
-    Parent: string;
-    Child: string;
-    Self: String;
+	Root: string;
+	Self: string;
 }

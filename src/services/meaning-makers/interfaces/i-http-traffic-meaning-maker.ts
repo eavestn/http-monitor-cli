@@ -4,7 +4,7 @@ import IHttpTrafficRecordMeaning from "../../../models/http-traffic-record-meani
 
 export default interface IHttpTrafficMeaningMaker {
 	SegmentTrafficRecordIntoDigestibleParts(record: IHttpTrafficRecord): IHttpTrafficRecordMeaning;
-	AgjustHttpTrafficBatchHistory(
+	AdjustHttpTrafficBatchHistory(
 		batch: IHttpTrafficRecordQueue,
 		record: IHttpTrafficRecordMeaning,
 	): IHttpTrafficRecordQueue;

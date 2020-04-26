@@ -32,7 +32,7 @@ export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
 	}
 
 	private _handleRecordAddition(record: IHttpTrafficRecord): void {
-		this._meaningMaker.AgjustHttpTrafficBatchHistory(
+		this._meaningMaker.AdjustHttpTrafficBatchHistory(
 			this,
 			this._meaningMaker.SegmentTrafficRecordIntoDigestibleParts(record),
 		);
