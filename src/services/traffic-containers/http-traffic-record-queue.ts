@@ -2,7 +2,7 @@ import IHttpTrafficRecord from "../../models/http-traffic-record";
 import { EventEmitter } from "events";
 import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 import IHttpTrafficMeaningMaker from "../meaning-makers/interfaces/i-http-traffic-meaning-maker";
-import ISegmentMeaning from "../../models/segments/segment-meaning";
+import ISegmentMeaning from "../../models/segments/i-segment-meaning";
 
 export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
 	private PERIOD_THRESHOLD_MS: number = 10000; // 10 seconds
@@ -55,6 +55,15 @@ export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
 			this._eventEmitter.emit("batch_at_capacity", record);
 			return undefined;
 		}
+	}
+
+	public AdjustMeaning(meaning: { [segment: string]: ISegmentMeaning }): IHttpTrafficRecordQueue {
+		this._meaning = meaning;
+		return this;
+	}
+
+	public GetMeaning(): { [segment: string]: ISegmentMeaning } {
+		return this._meaning;
 	}
 
 	public GetTrafficFinish(): Date | undefined {

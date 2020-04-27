@@ -24,10 +24,12 @@ import { createReadStream, PathLike } from "fs";
 import { resolve } from "path";
 import { config } from "dotenv";
 import IRawHttpTrafficRecord from "./models/raw-http-traffic-record";
-import HttpTrafficRecordFactory from "./services/http-traffic-record-factory";
+import HttpTrafficRecordFactory from "./factories/http-traffic-record-factory";
 import HttpTrafficBatchContainer from "./services/traffic-containers/http-traffic-batch-container";
 import HttpTrafficBatcher from "./services/traffic-containers/http-traffic-batcher";
 import HttpTrafficMeaningMaker from "./services/meaning-makers/http-traffic-meaning-maker";
+import HttpTrafficMonitor from "./services/monitors/http-traffic-monitor";
+import { EventEmitter } from "events";
 
 const queue: any[] = [];
 // init process.env
@@ -35,7 +37,10 @@ const conf = config({
 	path: resolve(__dirname, "../.env.dev"),
 }) as any;
 
-const batcher = new HttpTrafficBatcher(new HttpTrafficBatchContainer(), new HttpTrafficMeaningMaker());
+const batchContainer = new HttpTrafficBatchContainer();
+const monitorEventEmitter = new EventEmitter();
+const monitor = new HttpTrafficMonitor(monitorEventEmitter, batchContainer);
+const batcher = new HttpTrafficBatcher(monitorEventEmitter, batchContainer, new HttpTrafficMeaningMaker());
 
 createReadStream(process.env.PATH_TO_HTTP_STREAM_LOG_CSV as PathLike)
 	.pipe(csv())

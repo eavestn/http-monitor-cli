@@ -13,7 +13,8 @@
 				"limit": 120,
 				"ignore-pattern": "^import [^,]+ from |^export | implements |// "
 			}
-		]
+		],
+		"no-object-literal-type-assertion": false
 	},
 	"rulesDirectory": []
 }

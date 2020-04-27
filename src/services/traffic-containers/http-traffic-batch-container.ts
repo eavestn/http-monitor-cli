@@ -25,8 +25,6 @@ export default class HttpTrafficBatchContainer implements IHttpTrafficBatchConta
 		this._recordHashMap[hash] = queue;
 		this._batches += 1;
 
-		console.log(this._batches);
-
 		return hash;
 	}
 
