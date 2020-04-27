@@ -31,12 +31,23 @@ cd <directory cloned>/http-monitor-cli
 npm install
 ```
 
+Directories and other configurations necessary for this project's execution are read from a `.env` file. Currently, which file is used - [.env.dev](./.env.dev) - is hard coded in [index.ts](./src/index.ts). The provided configuration looks like:
+
+```
+PATH_TO_HTTP_STREAM_LOG_CSV=./logs/http-history.csv
+AVG_TRAFFIC_PER_SECOND=10
+```
+
+Two configurations are necessary to run this project (as seen above): `PATH_TO_HTTP_STREAM_LOG_CSV` and `AVG_TRAFFIC_PER_SECOND`.
+
+Consult the below table for their meaning:
+
+|         Configuration         | Description                                                                                           |
+| :---------------------------: | :---------------------------------------------------------------------------------------------------- |
+| `PATH_TO_HTTP_STREAM_LOG_CSV` | The path to the `.csv` file containing the traffic logs for a period of HTTP requests.                |
+|   `AVG_TRAFFIC_PER_SECOND`    | The expected average number of requests per second. Above and below which an alert will be triggered. |
+
 ## Running
-
-## Setup
-
--   env
--   npm
 
 ## Motivations And Problems
 
