@@ -38,9 +38,7 @@ PATH_TO_HTTP_STREAM_LOG_CSV=./logs/http-history.csv
 AVG_TRAFFIC_PER_SECOND=10
 ```
 
-Two configurations are necessary to run this project (as seen above): `PATH_TO_HTTP_STREAM_LOG_CSV` and `AVG_TRAFFIC_PER_SECOND`.
-
-Consult the below table for their meaning:
+Two configurations are necessary to run this project (as seen above): `PATH_TO_HTTP_STREAM_LOG_CSV` and `AVG_TRAFFIC_PER_SECOND`. Consult the below table for each configuration and its meaning:
 
 |         Configuration         | Description                                                                                           |
 | :---------------------------: | :---------------------------------------------------------------------------------------------------- |
@@ -48,6 +46,12 @@ Consult the below table for their meaning:
 |   `AVG_TRAFFIC_PER_SECOND`    | The expected average number of requests per second. Above and below which an alert will be triggered. |
 
 ## Running
+
+Running the project requires use of `ts-node` (installed through `npm install` in **Project Setup**); however, you may not have `ts-node` installed globally on your machine. To overcome this, we will run the project using `npx`. To start the project, run the following command:
+
+```
+npx ts-node ./src/index.ts
+```
 
 ## Motivations And Problems
 
