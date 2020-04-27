@@ -1,4 +1,4 @@
-import ISegment from "./segment";
+import ISegment from "../segment";
 
 export default interface ISegmentMeaning {
 	Segment: ISegment;

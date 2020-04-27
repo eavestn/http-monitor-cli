@@ -1,9 +1,9 @@
 import IHttpTrafficRecordBatchContainer from "./interfaces/i-http-traffic-batch-container";
-import IHttpTrafficRecord from "../../models/http-traffic-record";
 import HttpTrafficRecordQueue from "./http-traffic-record-queue";
 import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 import IHttpTrafficMeaningMaker from "../meaning-makers/interfaces/i-http-traffic-meaning-maker";
 import { EventEmitter } from "events";
+import IHttpTrafficRecord from "../../models/traffic/interfaces/http-traffic-record";
 
 export default class HttpTrafficBatcher {
 	private _batchContainer: IHttpTrafficRecordBatchContainer;

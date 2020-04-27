@@ -1,6 +1,6 @@
-import IRawHttpTrafficRecord from "../models/raw-http-traffic-record";
-import IHttpTrafficRecord from "../models/http-traffic-record";
-import IHttpRequest from "../models/http-request";
+import IRawHttpTrafficRecord from "../models/traffic/interfaces/raw-http-traffic-record";
+import IHttpTrafficRecord from "../models/traffic/interfaces/http-traffic-record";
+import IHttpRequest from "../models/traffic/interfaces/http-request";
 
 export default class HttpTrafficRecordFactory {
 	public static CreateHttpTrafficRecord(data: IRawHttpTrafficRecord): IHttpTrafficRecord {

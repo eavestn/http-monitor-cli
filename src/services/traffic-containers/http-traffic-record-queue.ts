@@ -1,8 +1,8 @@
-import IHttpTrafficRecord from "../../models/http-traffic-record";
 import { EventEmitter } from "events";
 import IHttpTrafficRecordQueue from "./interfaces/i-http-traffic-record-queue";
 import IHttpTrafficMeaningMaker from "../meaning-makers/interfaces/i-http-traffic-meaning-maker";
-import ISegmentMeaning from "../../models/segments/i-segment-meaning";
+import ISegmentMeaning from "../../models/segments/interfaces/i-segment-meaning";
+import IHttpTrafficRecord from "../../models/traffic/interfaces/http-traffic-record";
 
 export default class HttpTrafficRecordQueue implements IHttpTrafficRecordQueue {
 	private PERIOD_THRESHOLD_MS: number = 10000; // 10 seconds

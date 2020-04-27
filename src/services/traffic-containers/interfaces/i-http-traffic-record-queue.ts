@@ -1,5 +1,5 @@
-import IHttpTrafficRecord from "../../../models/http-traffic-record";
-import ISegmentMeaning from "../../../models/segments/i-segment-meaning";
+import ISegmentMeaning from "../../../models/segments/interfaces/i-segment-meaning";
+import IHttpTrafficRecord from "../../../models/traffic/interfaces/http-traffic-record";
 
 export default interface IHttpTrafficRecordQueue {
 	Dequeue(): IHttpTrafficRecord | undefined;
@@ -8,4 +8,5 @@ export default interface IHttpTrafficRecordQueue {
 	GetMeaning(): { [segment: string]: ISegmentMeaning };
 	GetTrafficFinish(): Date | undefined;
 	GetTrafficStart(): Date | undefined;
+	Length(): number;
 }

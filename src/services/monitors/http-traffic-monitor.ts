@@ -2,26 +2,37 @@ import { EventEmitter } from "events";
 import IHttpTrafficBatchContainer from "../traffic-containers/interfaces/i-http-traffic-batch-container";
 import IHttpTrafficRecordQueue from "../traffic-containers/interfaces/i-http-traffic-record-queue";
 import IHttpTrafficMonitor from "./i-http-traffic-monitor";
-import ISegmentMeaning from "../../models/segments/i-segment-meaning";
+import ISegmentMeaning from "../../models/segments/interfaces/i-segment-meaning";
+import IHttpTrafficMeaningMaker from "../meaning-makers/interfaces/i-http-traffic-meaning-maker";
+import ITwoMinuteHistory from "../../models/history/i-two-minute-history";
 
 export default class HttpTrafficMonitor implements IHttpTrafficMonitor {
-	constructor(public Emitter: EventEmitter, public BatchContainer: IHttpTrafficBatchContainer) {
+	constructor(
+		public Emitter: EventEmitter,
+		public BatchContainer: IHttpTrafficBatchContainer,
+		private _twoMinuteHistory: ITwoMinuteHistory,
+	) {
 		this.Emitter.on("batch_complete", this._handleBatchComplete.bind(this));
 	}
 
 	private _handleBatchComplete(batchId: string): void {
 		const batch = this.BatchContainer.GetRecordBatch(batchId);
-		const meaning = batch?.GetMeaning();
 
-		console.log(
-			`\n-----: log for batch ${batchId}:`,
-			` starting - ${batch?.GetTrafficStart()}`,
-			` finishing - ${batch?.GetTrafficFinish()}`,
-		);
+		if (batch) {
+			console.log(
+				`\n-----: log for batch ${batchId}:`,
+				` starting - ${batch.GetTrafficStart()}`,
+				` finishing - ${batch.GetTrafficFinish()}`,
+			);
 
-		// tslint:disable-next-line: forin
-		for (const segment in meaning) {
-			this._interpretBatchMeaning(batchId, meaning[segment]);
+			const meaning = batch.GetMeaning();
+
+			// tslint:disable-next-line: forin
+			for (const segment in meaning) {
+				this._interpretBatchMeaning(batchId, meaning[segment]);
+			}
+
+			this._twoMinuteHistory.EnqueueHistory(batchId);
 		}
 	}
 

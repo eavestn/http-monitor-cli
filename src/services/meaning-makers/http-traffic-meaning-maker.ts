@@ -1,9 +1,9 @@
 import IHttpTrafficMeaningMaker from "./interfaces/i-http-traffic-meaning-maker";
-import IHttpTrafficRecord from "../../models/http-traffic-record";
-import IHttpTrafficRecordMeaning from "../../models/http-traffic-record-meaning";
 import IHttpTrafficRecordQueue from "../traffic-containers/interfaces/i-http-traffic-record-queue";
 import ISegment from "../../models/segments/segment";
 import SegmentMeaning from "../../models/segments/segment-meaning";
+import IHttpTrafficRecordMeaning from "../../models/traffic/interfaces/http-traffic-record-meaning";
+import IHttpTrafficRecord from "../../models/traffic/interfaces/http-traffic-record";
 
 export default class HttpTrafficMeaningMaker implements IHttpTrafficMeaningMaker {
 	public SegmentTrafficRecordIntoDigestibleParts(record: IHttpTrafficRecord): IHttpTrafficRecordMeaning {

@@ -1,5 +1,5 @@
 import ISegment from "./segment";
-import ISegmentMeaning from "./i-segment-meaning";
+import ISegmentMeaning from "./interfaces/i-segment-meaning";
 
 export default class SegmentMeaning implements ISegmentMeaning {
 	public Segment: ISegment = {} as ISegment;

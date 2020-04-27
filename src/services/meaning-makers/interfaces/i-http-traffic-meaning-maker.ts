@@ -1,6 +1,6 @@
 import IHttpTrafficRecordQueue from "../../traffic-containers/interfaces/i-http-traffic-record-queue";
-import IHttpTrafficRecord from "../../../models/http-traffic-record";
-import IHttpTrafficRecordMeaning from "../../../models/http-traffic-record-meaning";
+import IHttpTrafficRecordMeaning from "../../../models/traffic/interfaces/http-traffic-record-meaning";
+import IHttpTrafficRecord from "../../../models/traffic/interfaces/http-traffic-record";
 
 export default interface IHttpTrafficMeaningMaker {
 	SegmentTrafficRecordIntoDigestibleParts(record: IHttpTrafficRecord): IHttpTrafficRecordMeaning;
